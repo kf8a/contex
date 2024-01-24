@@ -337,6 +337,9 @@ defmodule Contex.PointPlot do
       y_axis_svg,
       "<g>",
       get_svg_points(plot),
+      "</g>",
+      "<g>",
+      get_svg_fit(plot),
       "</g>"
     ]
   end
@@ -355,6 +358,13 @@ defmodule Contex.PointPlot do
     |> Axis.new_bottom_axis()
     |> Axis.set_offset(get_option(plot, :height))
     |> Kernel.struct(rotation: rotation)
+  end
+
+  defp get_svg_fit(%PointPlot{dataset: dataset} = _plot) do
+    case dataset.meta do
+      nil -> ""
+      _ -> line(dataset.meta.fit.points, false)
+    end
   end
 
   defp get_svg_points(%PointPlot{dataset: dataset} = plot) do

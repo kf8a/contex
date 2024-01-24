@@ -16,6 +16,19 @@ defmodule ContexPointPlotTest do
     Keyword.get(plot_content.options, key)
   end
 
+  describe "with a fit line in meta" do
+    test "adds a fit line to the graph" do
+      plot =
+        Dataset.new([{1, 2, 3, 4}, {4, 5, 6, 4}, {-3, -2, -1, 0}], ["aa", "bb", "cccc", "d"])
+        |> Dataset.meta(%{fit: %{points: [{1, 4}, {4, 4}]}})
+        |> PointPlot.new()
+
+      Plot.new(200, 200, plot)
+      |> Plot.to_svg()
+      |> IO.inspect()
+    end
+  end
+
   describe "new/2" do
     test "given data from tuples or lists, returns a PointPlot struct with defaults", %{
       plot: plot
